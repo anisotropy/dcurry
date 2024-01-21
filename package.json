@@ -1,0 +1,48 @@
+{
+  "name": "dcurry",
+  "version": "0.1.0",
+  "description": "Curry with dictionary(object)",
+  "keywords": [
+    "curry"
+  ],
+  "author": "Hodoug Joung",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anisotropy/dcurry"
+  },
+  "homepage": "https://github.com/anisotropy/dcurry",
+  "type": "module",
+  "main": "./dist/dcurry.umd.cjs",
+  "module": "./dist/dcurry.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/dcurry.js",
+      "require": "./dist/dcurry.umd.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "preview": "vite preview",
+    "lint": "eslint src",
+    "prettier": "prettier src"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-stratified-design": "^0.9.2",
+    "prettier": "^3.2.4",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12",
+    "vite-plugin-dts": "^3.7.1",
+    "vitest": "^1.2.1"
+  },
+  "license": "MIT"
+}
