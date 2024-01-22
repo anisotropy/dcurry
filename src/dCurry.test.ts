@@ -1,10 +1,10 @@
-import { dCurry } from './dCurry'
+import { dcurry } from './dCurry'
 
-describe('dCurry()', () => {
+describe('dcurry()', () => {
   describe('All required', () => {
     const fn = ({ a, b, c, d, e }: { a: number; b: string; c: number; d: string; e: number }) =>
       `${a}-${b}-${c}-${d}-${e}`
-    const curriedFn = dCurry(['a', 'b', 'c', 'd', 'e'], fn)
+    const curriedFn = dcurry(['a', 'b', 'c', 'd', 'e'], fn)
     test(`({ a: 1, b: '2', c: 3, d: '4', e: 5 })`, () => {
       const result = curriedFn({ a: 1, b: '2', c: 3, d: '4', e: 5 })
       expect(result).toBe('1-2-3-4-5')
@@ -34,7 +34,7 @@ describe('dCurry()', () => {
   describe('Optional', () => {
     const fn = ({ a, b, c, d, e }: { a?: number; b?: string; c: number; d: string; e?: number }) =>
       `${a ?? 'a'}-${b ?? 'b'}-${c}-${d}-${e ?? 'e'}`
-    const curriedFn = dCurry(['a', 'b', 'c', 'd', 'e'], fn)
+    const curriedFn = dcurry(['a', 'b', 'c', 'd', 'e'], fn)
     test(`({ a: undefined, b: undefined, c: 3, d: '4', e: undefined })`, () => {
       const result = curriedFn({ a: undefined, b: undefined, c: 3, d: '4', e: undefined })
       expect(result).toBe('a-b-3-4-e')
