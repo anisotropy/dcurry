@@ -51,6 +51,8 @@ const fn = (params: { a: number; b: number; c: number }) => `${a}-${b}-${c}`
 To curry this function, you need to input an array of all keys of the dictionary given as an argument to `dcurry` as the first argument:
 
 ```ts
+import { dcurry } from 'dcurry'
+
 const curriedFn = dcurry(['a', 'b', 'c'], fn)
 ```
 

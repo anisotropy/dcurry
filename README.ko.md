@@ -49,6 +49,8 @@ const fn = (params: { a: number; b: number; c: number }) => `${a}-${b}-${c}`
 이 함수를 커리하기 위해서는 인자로 주어지는 dictionary의 모든 key의 배열을 dcurry의 첫 번째 인자로 입력해야 한다.
 
 ```ts
+import { dcurry } from 'dcurry'
+
 const curriedFn = dcurry(['a', 'b', 'c'], fn)
 ```
 

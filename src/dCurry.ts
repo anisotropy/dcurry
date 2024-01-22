@@ -26,6 +26,6 @@ const dictCurry = <I extends Dict, A extends Dict, R>(keys: (keyof A)[], fn: (pa
 }
 
 // @level 1
-const dCurry = <A extends Dict, R>(keys: (keyof A)[], fn: (params: A) => R) => dictCurry(keys, fn, {})
+const dcurry = <A extends Dict, R>(keys: (keyof A)[], fn: (params: A) => R) => dictCurry(keys, fn, {})
 
-export { dCurry }
+export { dcurry }
