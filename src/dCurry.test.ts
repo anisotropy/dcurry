@@ -1,4 +1,4 @@
-import { dcurry } from './dCurry'
+import { dcurry, toDictParams } from './dCurry'
 
 describe('dcurry()', () => {
   describe('All required', () => {
@@ -59,7 +59,50 @@ describe('dcurry()', () => {
       const result = curriedFn({ d: '4' })({ e: undefined })({ a: undefined })({ b: undefined })({ c: 3 })
       expect(result).toBe('a-b-3-4-e')
     })
+  })
+})
 
-    // Should not use union
+describe('toDictParams', () => {
+  describe(`fn: (a: number, b: string) => string`, () => {
+    const fn = (a: number, b: string) => `${a}-${b}`
+    test(`['a', 'b'], { a: 1, b: '2' }`, () => {
+      const fnWithDictParams = toDictParams(['a', 'b'], fn)
+      expect(fnWithDictParams({ a: 1, b: '2' })).toBe('1-2')
+    })
+    test(`'keys.length' should be same as 'fn.length'.`, () => {
+      expect(() => toDictParams(['a'], fn)).toThrowError(/\w+/)
+    })
+  })
+  describe(`fn: (a: number, b?: string) => string`, () => {
+    const fn = (a: number, b?: string) => `${a}-${b}`
+    test(`['a', 'b'], { a: 1, b: '2' }`, () => {
+      const fnWithDictParams = toDictParams(['a', 'b'], fn)
+      expect(fnWithDictParams({ a: 1, b: '2' })).toBe('1-2')
+    })
+    test(`['a', 'b'], { a: 1 }`, () => {
+      const fnWithDictParams = toDictParams(['a', 'b'], fn)
+      expect(fnWithDictParams({ a: 1 })).toBe('1-undefined')
+    })
+    test(`'keys.length' should be same as 'fn.length'.`, () => {
+      expect(() => toDictParams(['a', 'b', 'c'], fn)).toThrowError(/\w+/)
+    })
+  })
+  describe(`fn: (a?: number, b?: string) => string`, () => {
+    const fn = (a?: number, b?: string) => `${a}-${b}`
+    test(`['a', 'b'], { a: 1, b: '2' }`, () => {
+      const fnWithDictParams = toDictParams(['a', 'b'], fn)
+      expect(fnWithDictParams({ a: 1, b: '2' })).toBe('1-2')
+    })
+    test(`['a', 'b'], { a: 1 }`, () => {
+      const fnWithDictParams = toDictParams(['a', 'b'], fn)
+      expect(fnWithDictParams({ a: 1 })).toBe('1-undefined')
+    })
+    test(`['a', 'b'], {}`, () => {
+      const fnWithDictParams = toDictParams(['a', 'b'], fn)
+      expect(fnWithDictParams({})).toBe('undefined-undefined')
+    })
+    test(`'keys.length' should be same as 'fn.length'.`, () => {
+      expect(() => toDictParams(['a'], fn)).toThrowError(/\w+/)
+    })
   })
 })

@@ -42,6 +42,8 @@ npm i dcurry
 
 ## Usage
 
+### `dcurry`
+
 For example, if you have the following function:
 
 ```ts
@@ -72,4 +74,22 @@ const curriedFn = dcurry(['a', 'b', 'c'], fn)
 
 const curriedFn2 = curriedFn({ b: 2, c: 3 })
 curredFn2({ a: undefined }) // -> a-2-3
+```
+
+### `toDictParams`
+
+`toDictParams` transforms a function with array parameters into a function with dictionary parameters.
+
+```ts
+const fn = (a: number, b?: string) => `${a}-${b}`
+
+toDictParams(['a', 'b'], fn) // -> ({ a: number, b?: string }) => string
+```
+
+Note that using default parameters is not allowed.
+
+```ts
+const fn = (a: number, b = '3') => `${a}-${b}`
+
+toDictParams(['a', 'b'], fn) // This will result in an error.
 ```

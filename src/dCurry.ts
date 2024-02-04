@@ -28,4 +28,24 @@ const dictCurry = <I extends Dict, A extends Dict, R>(keys: (keyof A)[], fn: (pa
 // @level 1
 const dcurry = <A extends Dict, R>(keys: (keyof A)[], fn: (params: A) => R) => dictCurry(keys, fn, {})
 
-export { dcurry }
+type Tuple<Arr extends unknown[]> = Omit<Arr, keyof unknown[]>
+
+type KeysFor<Arr extends unknown[]> = PropertyKey[] & Record<keyof Tuple<Arr>, PropertyKey>
+
+type ToDict<Values extends unknown[], Keys extends KeysFor<Values>> = {
+  [K in keyof Tuple<Values> as Keys[K]]: Values[K]
+}
+
+// @level 1
+const toDictParams = <ArrParams extends unknown[], Keys extends KeysFor<ArrParams>, R>(
+  keys: readonly [...Keys],
+  fn: (...arrParams: [...ArrParams]) => R
+) => {
+  if (keys.length !== fn.length) throw new Error(`'keys.length' should be same as 'fn.length'.`)
+  return (dictParams: ToDict<ArrParams, Keys>) => {
+    const arrParams = keys.map((key) => dictParams[key as unknown as keyof typeof dictParams]) as ArrParams
+    return fn(...arrParams)
+  }
+}
+
+export { dcurry, toDictParams }
