@@ -40,13 +40,15 @@ npm i dcurry
 
 ## 사용법
 
+### `dcurry`
+
 예를 들어, 다음과 같은 함수가 있다면,
 
 ```ts
 const fn = (params: { a: number; b: number; c: number }) => `${a}-${b}-${c}`
 ```
 
-이 함수를 커리하기 위해서는 인자로 주어지는 dictionary의 모든 key의 배열을 dcurry의 첫 번째 인자로 입력해야 한다.
+이 함수를 커리하기 위해서는 인자로 주어지는 딕션어리의 모든 key의 배열을 `dcurry`의 첫 번째 인자로 입력해야 한다.
 
 ```ts
 import { dcurry } from 'dcurry'
@@ -61,7 +63,7 @@ const curriedFn2 = curriedFn({ b: 2, c: 3 })
 curredFn2({ a: 1 }) // -> 1-2-3
 ```
 
-만약 인자로 주어지는 dictionary 중 optional한 key가 있다면, 해당 value를 입력할 때는 `undefined`를 사용해야만 한다.
+만약 인자로 주어지는 딕션어리 중 optional한 key가 있다면, 해당 value를 입력할 때는 `undefined`를 사용해야만 한다.
 
 ```ts
 const fn = (params: { a?: number; b: number; c: number }) => `${a ?? 'a'}-${b}-${c}`
@@ -70,4 +72,22 @@ const curriedFn = dcurry(['a', 'b', 'c'], fn)
 
 const curriedFn2 = curriedFn({ b: 2, c: 3 })
 curredFn2({ a: undefined }) // -> a-2-3
+```
+
+### `toDictParams`
+
+`toDictParams`는 배열 매개변수를 가진 함수를 딕션어리 매개변수를 가진 함수로 변환합니다.
+
+```ts
+const fn = (a: number, b?: string) => `${a}-${b}`
+
+toDictParams(['a', 'b'], fn) // -> ({ a: number, b?: string }) => string
+```
+
+디폴트 매개변수를 사용하면 안된다는 점에 주의하세요.
+
+```ts
+const fn = (a: number, b = '3') => `${a}-${b}`
+
+toDictParams(['a', 'b'], fn) // 에러가 발생합니다.
 ```
