@@ -28,24 +28,39 @@ const dictCurry = <I extends Dict, A extends Dict, R>(keys: (keyof A)[], fn: (pa
 // @level 1
 const dcurry = <A extends Dict, R>(keys: (keyof A)[], fn: (params: A) => R) => dictCurry(keys, fn, {})
 
-type Tuple<Arr extends unknown[]> = Omit<Arr, keyof unknown[]>
-
-type KeysFor<Arr extends unknown[]> = PropertyKey[] & Record<keyof Tuple<Arr>, PropertyKey>
-
-type ToDict<Values extends unknown[], Keys extends KeysFor<Values>> = {
-  [K in keyof Tuple<Values> as Keys[K]]: Values[K]
-}
-
 // @level 1
-const toDictParams = <ArrParams extends unknown[], Keys extends KeysFor<ArrParams>, R>(
+const toDictParams = <ArrParams extends unknown[], Keys extends string[], R>(
   keys: readonly [...Keys],
-  fn: (...arrParams: [...ArrParams]) => R
+  fn: (...arrParams: ArrParams) => R
 ) => {
+  type DictParams = {
+    [K in keyof Omit<ArrParams, keyof unknown[]> as K extends keyof Keys
+      ? Keys[K] extends PropertyKey
+        ? Keys[K]
+        : Keys[number]
+      : Keys[number]]: ArrParams[K]
+  }
   if (keys.length !== fn.length) throw new Error(`'keys.length' should be same as 'fn.length'.`)
-  return (dictParams: ToDict<ArrParams, Keys>) => {
+  return (dictParams: DictParams) => {
     const arrParams = keys.map((key) => dictParams[key as unknown as keyof typeof dictParams]) as ArrParams
     return fn(...arrParams)
   }
 }
 
-export { dcurry, toDictParams }
+// @level 1
+const toArrParams = <DictParams extends Dict, Keys extends (keyof DictParams)[], Return>(
+  keys: readonly [...Keys],
+  fn: (dictParams: DictParams) => Return
+) => {
+  type InverseKeys = { [K in keyof Keys as Keys[K] extends PropertyKey ? Keys[K] : Keys[number]]: K }
+  type ArrParams = { [K in keyof DictParams as InverseKeys[K]]: DictParams[K] } & DictParams[keyof DictParams][]
+  return (...arrParams: ArrParams) => {
+    const dictParams = keys.reduce((dictParams, key, index) => {
+      dictParams[key] = arrParams[index]
+      return dictParams
+    }, {} as DictParams)
+    return fn(dictParams)
+  }
+}
+
+export { dcurry, toDictParams, toArrParams }
