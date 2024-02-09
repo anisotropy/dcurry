@@ -93,3 +93,13 @@ const fn = (a: number, b = '3') => `${a}-${b}`
 
 toDictParams(['a', 'b'], fn) // This will result in an error.
 ```
+
+### `toArrParams`
+
+`toArrParams` transforms a function with dictionary parameters into a function with array parameters.
+
+```ts
+const fn = (params: { a: number; b?: string }) => `${params.a}-${params.b}`
+
+toArrParams(['a', 'b'], fn) // -> (a: number, b?: string) => string
+```

@@ -91,3 +91,13 @@ const fn = (a: number, b = '3') => `${a}-${b}`
 
 toDictParams(['a', 'b'], fn) // 에러가 발생합니다.
 ```
+
+### `toArrParams`
+
+`toArrParams`는 딕션어리 매개변수를 가진 함수를 배열 매개변수를 가진 함수로 변환합니다.
+
+```ts
+const fn = (params: { a: number; b?: string }) => `${params.a}-${params.b}`
+
+toArrParams(['a', 'b'], fn) // -> (a: number, b?: string) => string
+```

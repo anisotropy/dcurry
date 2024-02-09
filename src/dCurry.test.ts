@@ -116,7 +116,7 @@ describe('toArrParams', () => {
   test(`(1, undefined)`, () => {
     const fn = (params: { a: number; b?: string }) => `${params.a}-${params.b}`
     const fnWithArrParams = toArrParams(['a', 'b'], fn)
-    expect(fnWithArrParams(1, undefined)).toBe('1-undefined')
+    expect(fnWithArrParams(1)).toBe('1-undefined')
   })
   test(`(undefined, '2')`, () => {
     const fn = (params: { a?: number; b: string }) => `${params.a}-${params.b}`
