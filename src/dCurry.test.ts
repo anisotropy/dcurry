@@ -1,4 +1,4 @@
-import { dcurry, toDictParams } from './dCurry'
+import { dcurry, toArrParams, toDictParams } from './dCurry'
 
 describe('dcurry()', () => {
   describe('All required', () => {
@@ -104,5 +104,23 @@ describe('toDictParams', () => {
     test(`'keys.length' should be same as 'fn.length'.`, () => {
       expect(() => toDictParams(['a'], fn)).toThrowError(/\w+/)
     })
+  })
+})
+
+describe('toArrParams', () => {
+  test(`(1, '2')`, () => {
+    const fn = (params: { a: number; b: string }) => `${params.a}-${params.b}`
+    const fnWithArrParams = toArrParams(['a', 'b'], fn)
+    expect(fnWithArrParams(1, '2')).toBe('1-2')
+  })
+  test(`(1, undefined)`, () => {
+    const fn = (params: { a: number; b?: string }) => `${params.a}-${params.b}`
+    const fnWithArrParams = toArrParams(['a', 'b'], fn)
+    expect(fnWithArrParams(1, undefined)).toBe('1-undefined')
+  })
+  test(`(undefined, '2')`, () => {
+    const fn = (params: { a?: number; b: string }) => `${params.a}-${params.b}`
+    const fnWithArrParams = toArrParams(['a', 'b'], fn)
+    expect(fnWithArrParams(undefined, '2')).toBe('undefined-2')
   })
 })
