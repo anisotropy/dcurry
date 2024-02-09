@@ -76,7 +76,7 @@ curredFn2({ a: undefined }) // -> a-2-3
 
 ### `toDictParams`
 
-`toDictParams`는 배열 매개변수를 가진 함수를 딕션어리 매개변수를 가진 함수로 변환합니다.
+`toDictParams`는 배열 매개변수를 가진 함수를 딕션어리 매개변수를 가진 함수로 변환한다.
 
 ```ts
 const fn = (a: number, b?: string) => `${a}-${b}`
@@ -84,17 +84,17 @@ const fn = (a: number, b?: string) => `${a}-${b}`
 toDictParams(['a', 'b'], fn) // -> ({ a: number, b?: string }) => string
 ```
 
-디폴트 매개변수를 사용하면 안된다는 점에 주의하세요.
+디폴트 매개변수를 사용하면 안된다는 점에 주의해야 한다.
 
 ```ts
 const fn = (a: number, b = '3') => `${a}-${b}`
 
-toDictParams(['a', 'b'], fn) // 에러가 발생합니다.
+toDictParams(['a', 'b'], fn) // 에러 발생.
 ```
 
 ### `toArrParams`
 
-`toArrParams`는 딕션어리 매개변수를 가진 함수를 배열 매개변수를 가진 함수로 변환합니다.
+`toArrParams`는 딕션어리 매개변수를 가진 함수를 배열 매개변수를 가진 함수로 변환한다.
 
 ```ts
 const fn = (params: { a: number; b?: string }) => `${params.a}-${params.b}`
